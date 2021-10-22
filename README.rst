@@ -1,14 +1,8 @@
 uap-python
 ==========
 
-A python implementation of the UA Parser (https://github.com/ua-parser,
+An **up to date** python implementation of the UA Parser (https://github.com/ua-parser,
 formerly https://github.com/tobie/ua-parser)
-
-Build Status
-------------
-
-.. image:: https://travis-ci.org/ua-parser/uap-python.svg
-   :target: https://travis-ci.org/ua-parser/uap-python
 
 Installing
 ----------
@@ -20,7 +14,7 @@ Just run:
 
 .. code-block:: sh
 
-    $ pip install ua-parser
+    $ pip install ua-parser-up2date
 
 Manual install
 ~~~~~~~~~~~~~~

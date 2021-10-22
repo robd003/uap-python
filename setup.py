@@ -184,7 +184,7 @@ cmdclass = {
 
 setup(
     name="ua-parser-up2date",
-    version="0.14.0",
+    version="0.14.1",
     description="Python port of Browserscope's user agent parser that is kept up to date!",
     author="PBS",
     author_email="no-reply@pbs.org",
@@ -196,6 +196,7 @@ setup(
     include_package_data=True,
     setup_requires=["pyyaml"],
     install_requires=[],
+    python_requires='>=3.8',
     cmdclass=cmdclass,
     classifiers=[
         "Development Status :: 5 - Production/Stable",
@@ -213,4 +214,6 @@ setup(
         "Programming Language :: Python :: Implementation :: CPython",
         "Programming Language :: Python :: Implementation :: PyPy",
     ],
+    long_description=open('README.rst').read(),
+    long_description_content_type='text/x-rst'
 )
