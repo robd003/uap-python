@@ -4,6 +4,13 @@ uap-python
 An **up to date** python implementation of the UA Parser (https://github.com/ua-parser,
 formerly https://github.com/tobie/ua-parser)
 
+Build Status
+------------
+
+.. image:: https://github.com/ua-parser/uap-python/actions/workflows/ci.yml/badge.svg
+   :alt: CI on the master branch
+
+
 Installing
 ----------
 
@@ -43,13 +50,15 @@ Retrieve data on a user-agent string
     >>> ua_string = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.104 Safari/537.36'
     >>> parsed_string = user_agent_parser.Parse(ua_string)
     >>> pp.pprint(parsed_string)
-    {   'device': {   'brand': 'Apple', 'family': 'Mac', 'model': 'Mac'},
+    {   'device': {'brand': 'Apple', 'family': 'Mac', 'model': 'Mac'},
         'os': {   'family': 'Mac OS X',
                   'major': '10',
                   'minor': '9',
                   'patch': '4',
                   'patch_minor': None},
-        'string': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.104 Safari/537.36',
+        'string': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) '
+                  'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.104 '
+                  'Safari/537.36',
         'user_agent': {   'family': 'Chrome',
                           'major': '41',
                           'minor': '0',
@@ -66,10 +75,18 @@ Extract browser data from user-agent string
     >>> ua_string = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.104 Safari/537.36'
     >>> parsed_string = user_agent_parser.ParseUserAgent(ua_string)
     >>> pp.pprint(parsed_string)
-     {   'family': 'Chrome',
-         'major': '41',
-         'minor': '0',
-         'patch': '2272'}
+    {'family': 'Chrome', 'major': '41', 'minor': '0', 'patch': '2272'}
+
+..
+
+    ⚠️Before 0.15, the convenience parsers (``ParseUserAgent``,
+    ``ParseOs``, and ``ParseDevice``) were not cached, which could
+    result in degraded performances when parsing large amounts of
+    identical user-agents (which might occur for real-world datasets).
+
+    For these versions (up to 0.10 included), prefer using ``Parse``
+    and extracting the sub-component you need from the resulting
+    dictionary.
 
 Extract OS information from user-agent string
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -99,9 +116,7 @@ Extract Device information from user-agent string
     >>> ua_string = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.104 Safari/537.36'
     >>> parsed_string = user_agent_parser.ParseDevice(ua_string)
     >>> pp.pprint(parsed_string)
-    {   'brand': 'Apple',
-        'family': 'Mac',
-        'model': 'Mac'}
+    {'brand': 'Apple', 'family': 'Mac', 'model': 'Mac'}
 
 Copyright
 ---------

@@ -82,13 +82,25 @@ class build_regexes(Command):
                 return text
             return text.encode("utf8")
 
-        import yaml
+        def write_params(fields):
+            # strip trailing None values
+            while len(fields) > 1 and fields[-1] is None:
+                fields.pop()
 
-        py_dest = os.path.join(self.build_lib, "ua_parser", "_regexes.py")
+            for field in fields:
+                fp.write(("        %r,\n" % field).encode("utf-8"))
+
+        import yaml
 
         log.info("compiling regexes.yaml -> _regexes.py")
         with open(yaml_src, "rb") as fp:
             regexes = yaml.safe_load(fp)
+
+        lib_dest = os.path.join(self.build_lib, "ua_parser")
+        if not os.path.exists(lib_dest):
+            os.makedirs(lib_dest)
+
+        py_dest = os.path.join(lib_dest, "_regexes.py")
         with open(py_dest, "wb") as fp:
             # fmt: off
             fp.write(b"# -*- coding: utf-8 -*-\n")
@@ -103,40 +115,44 @@ class build_regexes(Command):
             fp.write(b"    UserAgentParser, DeviceParser, OSParser,\n")
             fp.write(b")\n")
             fp.write(b"\n")
-            fp.write(b"__all__ = (\n")
-            fp.write(b"    'USER_AGENT_PARSERS', 'DEVICE_PARSERS', 'OS_PARSERS',\n")
-            fp.write(b")\n")
+            fp.write(b"__all__ = ('USER_AGENT_PARSERS', 'DEVICE_PARSERS', 'OS_PARSERS')\n")
             fp.write(b"\n")
             fp.write(b"USER_AGENT_PARSERS = [\n")
             for device_parser in regexes["user_agent_parsers"]:
                 fp.write(b"    UserAgentParser(\n")
-                fp.write(force_bytes("        %r,\n" % device_parser["regex"]))
-                fp.write(force_bytes("        %r,\n" % device_parser.get("family_replacement")))
-                fp.write(force_bytes("        %r,\n" % device_parser.get("v1_replacement")))
-                fp.write(force_bytes("        %r,\n" % device_parser.get("v2_replacement")))
+                write_params([
+                    device_parser["regex"],
+                    device_parser.get("family_replacement"),
+                    device_parser.get("v1_replacement"),
+                    device_parser.get("v2_replacement"),
+                ])
                 fp.write(b"    ),\n")
             fp.write(b"]\n")
             fp.write(b"\n")
             fp.write(b"DEVICE_PARSERS = [\n")
             for device_parser in regexes["device_parsers"]:
                 fp.write(b"    DeviceParser(\n")
-                fp.write(force_bytes("        %r,\n" % device_parser["regex"]))
-                fp.write(force_bytes("        %r,\n" % device_parser.get("regex_flag")))
-                fp.write(force_bytes("        %r,\n" % device_parser.get("device_replacement")))
-                fp.write(force_bytes("        %r,\n" % device_parser.get("brand_replacement")))
-                fp.write(force_bytes("        %r,\n" % device_parser.get("model_replacement")))
+                write_params([
+                    device_parser["regex"],
+                    device_parser.get("regex_flag"),
+                    device_parser.get("device_replacement"),
+                    device_parser.get("brand_replacement"),
+                    device_parser.get("model_replacement"),
+                ])
                 fp.write(b"    ),\n")
             fp.write(b"]\n")
             fp.write(b"\n")
             fp.write(b"OS_PARSERS = [\n")
             for device_parser in regexes["os_parsers"]:
                 fp.write(b"    OSParser(\n")
-                fp.write(force_bytes("        %r,\n" % device_parser["regex"]))
-                fp.write(force_bytes("        %r,\n" % device_parser.get("os_replacement")))
-                fp.write(force_bytes("        %r,\n" % device_parser.get("os_v1_replacement")))
-                fp.write(force_bytes("        %r,\n" % device_parser.get("os_v2_replacement")))
-                fp.write(force_bytes("        %r,\n" % device_parser.get("os_v3_replacement")))
-                fp.write(force_bytes("        %r,\n" % device_parser.get("os_v4_replacement")))
+                write_params([
+                    device_parser["regex"],
+                    device_parser.get("os_replacement"),
+                    device_parser.get("os_v1_replacement"),
+                    device_parser.get("os_v2_replacement"),
+                    device_parser.get("os_v3_replacement"),
+                    device_parser.get("os_v4_replacement"),
+                ])
                 fp.write(b"    ),\n")
             fp.write(b"]\n")
             # fmt: on
@@ -184,7 +200,7 @@ cmdclass = {
 
 setup(
     name="ua-parser-up2date",
-    version="0.15.0",
+    version="0.16.1",
     description="Python port of Browserscope's user agent parser that is kept up to date!",
     author="PBS",
     author_email="no-reply@pbs.org",
@@ -208,6 +224,17 @@ setup(
         "Topic :: Internet :: WWW/HTTP",
         "Topic :: Software Development :: Libraries :: Python Modules",
         "Programming Language :: Python",
+<<<<<<< HEAD
+=======
+        "Programming Language :: Python :: 2",
+        "Programming Language :: Python :: 2.7",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.3",
+        "Programming Language :: Python :: 3.4",
+        "Programming Language :: Python :: 3.5",
+        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
+>>>>>>> 52053d54a6e4708ea5945ba01487642615d750fe
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
