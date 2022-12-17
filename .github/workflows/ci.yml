@@ -15,9 +15,9 @@ jobs:
     - name: Checkout working copy
       uses: actions/checkout@v3
     - name: Set up Python
-      uses: actions/setup-python@v3
+      uses: actions/setup-python@v4
       with:
-        python-version: "3.10"
+        python-version: "3.11"
     - name: Install checkers
       run: |
         python -mpip install --upgrade pip
@@ -32,13 +32,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["2.7", "3.6", "3.7", "3.8", "3.9", "3.10", "3.11.0-alpha - 3.11", "pypy-3.8"]
-        pyyaml-version: ["5.1.*", "5.4.*", "6.0.*", "6.*"]
-        exclude:
-          - python-version: 2.7
-            pyyaml-version: 6.0.*
-          - python-version: 2.7
-            pyyaml-version: 6.*
+        python-version: ["3.9", "3.10", "3.11", "pypy-3.9"]
+        pyyaml-version: ["6.0.*", "6.*"]
 
     steps:
     - name: Checkout working copy
@@ -63,7 +58,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["2.7", "3.6", "3.7", "3.8", "3.9", "3.10", "3.11.0-alpha - 3.11", "pypy-3.8"]
+        python-version: ["3.9", "3.10", "3.11"]
 
     steps:
     - name: Checkout working copy
@@ -77,10 +72,8 @@ jobs:
         python -mpip install --upgrade pip
         # if binary wheels are not available for the current package install libyaml
         # NB: cyaml is outright broken on pypy so exclude that
-        if ! ${{matrix.python-version == 'pypy-3.8'}}; then
-            if ! pip download --only-binary pyyaml -rrequirements_dev.txt > /dev/null 2>&1; then
-                sudo apt install libyaml-dev
-            fi
+        if ! pip download --only-binary pyyaml -rrequirements_dev.txt > /dev/null 2>&1; then
+            sudo apt install libyaml-dev
         fi
         python -mpip install -r requirements_dev.txt
     - name: install package in environment
@@ -88,6 +81,4 @@ jobs:
     - name: run tests
       run: pytest -v -Werror
     - name: run doctests
-      # pprint formatting was changed a lot in 3.5
-      if: ${{ matrix.python-version != '2.7' }}
       run: python -mdoctest README.rst
