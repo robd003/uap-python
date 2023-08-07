@@ -3,16 +3,16 @@ requires = ["setuptools", "setuptools-scm", "PyYaml"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "ua-parser"
+name = "ua-parser-up2date"
 description = "Python port of Browserscope's user agent parser"
 version = "1.0.0a"
 readme = "README.rst"
-requires-python = ">=3.8"
+requires-python = ">=3.9"
 dependencies = []
 optional-dependencies = { yaml = ["PyYaml"] }
 
 license = {text = "Apache 2.0"}
-urls = {repository = "https://github.com/ua-parser/uap-python"}
+urls = {repository = "https://github.com/robd003/uap-python-up2date"}
 
 authors = [
    { name = "Stephen Lamm", email = "slamm@google.com"},
@@ -35,7 +35,6 @@ classifiers = [
         "Topic :: Internet :: WWW/HTTP",
         "Topic :: Software Development :: Libraries :: Python Modules",
         "Programming Language :: Python",
-        "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
