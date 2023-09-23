@@ -46,7 +46,7 @@ jobs:
       run: |
         python -mpip install --upgrade pip
         python -mpip install build
-        pythom -mpip install PyYAML
+        python -mpip install PyYAML
     - name: Build sdist and wheel
       run: |
         python -mbuild
